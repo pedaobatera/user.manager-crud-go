@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/pedaobatera/user.manager-crud-go/user.manager-crud-go/src/controller"
+	"user.manager-crud-go/src/controller"
 )
 
 func InitRoutes(r *gin.RouterGroup) {
