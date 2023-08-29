@@ -5,13 +5,13 @@ import (
 	"user.manager-crud-go/src/controller"
 )
 
-func InitRoutes(r *gin.RouterGroup) {
+func InitRoutes(r *gin.RouterGroup, userController controller.UserControllerInterface) {
 
-	r.GET("/getUserById/:userId", controller.FindUserById)
-	r.GET("/getAllUsers", controller.FindAllUsers)
-	r.GET("/getUsersByEmail/:userEmail", controller.FindUsersByEmail)
-	r.POST("/createUser", controller.CreateUser)
-	r.PUT("/updateUser/:userId", controller.UpdateUser)
-	r.DELETE("/deleteUser/:userId", controller.DeleteUser)
+	r.GET("/getUserById/:userId", userController.FindUserById)
+	r.GET("/getAllUsers", userController.FindAllUsers)
+	r.GET("/getUsersByEmail/:userEmail", userController.FindUsersByEmail)
+	r.POST("/createUser", userController.CreateUser)
+	r.PUT("/updateUser/:userId", userController.UpdateUser)
+	r.DELETE("/deleteUser/:userId", userController.DeleteUser)
 
 }
