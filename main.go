@@ -9,7 +9,10 @@ import (
 
 	"user.manager-crud-go/src/configuration/database/mongodb"
 	"user.manager-crud-go/src/configuration/logger"
+	"user.manager-crud-go/src/controller"
 	"user.manager-crud-go/src/controller/routes"
+	"user.manager-crud-go/src/model/repository"
+	"user.manager-crud-go/src/model/service"
 )
 
 func main() {
@@ -27,7 +30,10 @@ func main() {
 		return
 	}
 
-	userController := initDepedencies(database)
+	// Init dependencies
+	repo := repository.NewUserRepository(database)
+	service := service.NewUserDomainService(repo)
+	userController := controller.NewUserControllerInterface(service)
 
 	router := gin.Default()
 

@@ -52,5 +52,5 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 		zap.String("user_id", domainResult.GetID()),
 		zap.String("journey", "createUser"))
 
-	c.JSON(http.StatusOK, view.ConvertDomainToResponse(domainResult))
+	c.JSON(http.StatusCreated, view.ConvertDomainToResponse(domainResult))
 }

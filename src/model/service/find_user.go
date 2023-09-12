@@ -7,8 +7,20 @@ import (
 	"user.manager-crud-go/src/model"
 )
 
-func (ud *userDomainService) FindUserService(string) (*model.UserDomainInterface, *rest_err.RestErr) {
-	logger.Info("Init FindUser domain", zap.String("journey", "findUser"))
+func (ud *userDomainService) FindUserByIdServices(
+	id string,
+) (model.UserDomainInterface, *rest_err.RestErr) {
+	logger.Info("Init findUserById services.",
+		zap.String("journey", "findUserById"))
 
-	return nil, nil
+	return ud.userRepository.FindUserById(id)
+}
+
+func (ud *userDomainService) FindUserByEmailServices(
+	email string,
+) (model.UserDomainInterface, *rest_err.RestErr) {
+	logger.Info("Init findUserByEmail services.",
+		zap.String("journey", "findUserByEmail"))
+
+	return ud.userRepository.FindUserByEmail(email)
 }

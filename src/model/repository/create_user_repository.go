@@ -12,10 +12,6 @@ import (
 	"user.manager-crud-go/src/model/repository/entity/converter"
 )
 
-const (
-	MONGO_USER_DB = "MONGO_USER_DB"
-)
-
 func (ur *userRepository) CreateUser(
 	userDomain model.UserDomainInterface,
 ) (model.UserDomainInterface, *rest_err.RestErr) {
