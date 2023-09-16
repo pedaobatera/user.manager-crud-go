@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"net/mail"
 
@@ -9,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	"user.manager-crud-go/src/configuration/logger"
 	"user.manager-crud-go/src/configuration/rest_err"
+	"user.manager-crud-go/src/model"
 	"user.manager-crud-go/src/view"
 )
 
@@ -16,6 +18,15 @@ func (uc *userControllerInterface) FindUserById(c *gin.Context) {
 	logger.Info("Init findUserById controller",
 		zap.String("journey", "findUserById"),
 	)
+
+	user, err := model.VerifyToken(c.Request.Header.Get("Authorization"))
+	if err != nil {
+		c.JSON(err.Code, err)
+		return
+	}
+
+	logger.Info(fmt.Sprintf("User authenticated successfully: %#v", user))
+
 	userId := c.Param("userId")
 
 	if _, err := primitive.ObjectIDFromHex(userId); err != nil {
@@ -70,7 +81,7 @@ func (uc *userControllerInterface) FindUsersByEmail(c *gin.Context) {
 		return
 	}
 
-	userDomain, err := uc.service.FindUserByIdServices(userEmail)
+	userDomain, err := uc.service.FindUserByEmailServices(userEmail)
 	if err != nil {
 		logger.Error("Error trying to find user by email services",
 			err,

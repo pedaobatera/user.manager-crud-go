@@ -13,20 +13,16 @@ import (
 	"user.manager-crud-go/src/view"
 )
 
-var (
-	UserDomainInterface model.UserDomainInterface
-)
-
-func (uc *userControllerInterface) CreateUser(c *gin.Context) {
-	logger.Info("Init CreateUser controller",
-		zap.String("journey", "createUser"),
+func (uc *userControllerInterface) LoginUser(c *gin.Context) {
+	logger.Info("Init loginUser controller",
+		zap.String("journey", "loginUser"),
 	)
-	var userRequest request.UserRequest
+	var userRequest request.UserLogin
 
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		logger.Error("Error trying to validate user info",
 			err,
-			zap.String("journey", "createUser"),
+			zap.String("journey", "loginUser"),
 		)
 		errRest := rest_err.NewBadRequestError("Some fields are incorrect")
 		errRest = validation.ValidateUserError(err)
@@ -35,27 +31,26 @@ func (uc *userControllerInterface) CreateUser(c *gin.Context) {
 		return
 	}
 
-	domain := model.NewUserDomain(
+	domain := model.NewUserLoginDomain(
 		userRequest.Email,
 		userRequest.Password,
-		userRequest.Name,
-		userRequest.Age,
 	)
 
-	domainResult, err := uc.service.CreateUserService(domain)
+	domainResult, token, err := uc.service.LoginUserService(domain)
 	if err != nil {
 		logger.Error(
-			"Error trying to create user",
+			"Error trying to login user",
 			err,
-			zap.String("journey", "createUser"))
+			zap.String("journey", "loginUser"))
 		c.JSON(err.Code, err)
 		return
 	}
 
 	logger.Info(
-		"User created successfully",
+		"User login successfully",
 		zap.String("user_id", domainResult.GetID()),
-		zap.String("journey", "createUser"))
+		zap.String("journey", "loginUser"))
 
+	c.Header("Authorization", token)
 	c.JSON(http.StatusCreated, view.ConvertDomainToResponse(domainResult))
 }
