@@ -21,6 +21,10 @@ func (uc *userControllerInterface) FindUserById(c *gin.Context) {
 
 	user, err := model.VerifyToken(c.Request.Header.Get("Authorization"))
 	if err != nil {
+		logger.Error("Error validating token",
+			err,
+			zap.String("journey", "findUserById by token"),
+		)
 		c.JSON(err.Code, err)
 		return
 	}

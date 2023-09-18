@@ -102,8 +102,8 @@ func VerifyTokenMiddleware(c *gin.Context) {
 
 func RemoveBearerPrefix(token string) string {
 	if strings.HasPrefix(token, "Bearer ") {
-		token = strings.TrimPrefix("Bearer ", token)
+		token = strings.TrimPrefix(token, "Bearer ")
 	}
-
+	fmt.Println(token)
 	return token
 }
