@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"net/mail"
 
@@ -10,7 +9,6 @@ import (
 	"go.uber.org/zap"
 	"user.manager-crud-go/src/configuration/logger"
 	"user.manager-crud-go/src/configuration/rest_err"
-	"user.manager-crud-go/src/model"
 	"user.manager-crud-go/src/view"
 )
 
@@ -19,6 +17,7 @@ func (uc *userControllerInterface) FindUserById(c *gin.Context) {
 		zap.String("journey", "findUserById"),
 	)
 
+	/* trecho de validação de token removido para o middleware
 	user, err := model.VerifyToken(c.Request.Header.Get("Authorization"))
 	if err != nil {
 		logger.Error("Error validating token",
@@ -28,9 +27,8 @@ func (uc *userControllerInterface) FindUserById(c *gin.Context) {
 		c.JSON(err.Code, err)
 		return
 	}
-
 	logger.Info(fmt.Sprintf("User authenticated successfully: %#v", user))
-
+	*/
 	userId := c.Param("userId")
 
 	if _, err := primitive.ObjectIDFromHex(userId); err != nil {
